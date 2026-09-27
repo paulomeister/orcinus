@@ -1,5 +1,6 @@
 import express from 'express';
 import agentRoutes from './routes/agent.routes';
+import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
 const PORT = 3000;
@@ -9,6 +10,9 @@ app.use(express.json());
 
 // Routes
 app.use('/api', agentRoutes);
+
+// Error handler middleware (must be last)
+app.use(errorHandler);
 
 // Start server
 const server = app.listen(PORT, () => {
