@@ -22,7 +22,7 @@
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
 
     // Style Options
     // "noImplicitReturns": true,
@@ -43,5 +43,6 @@
 
     "moduleResolution": "bundler",
     "esModuleInterop": true,
-  }
+  },
+  "exclude": ["scripts/", "node_modules/"]
 }

@@ -1,4 +1,10 @@
 import type { Request, Response, NextFunction } from 'express';
+import { ZodError } from 'zod';
+
+interface ZodIssue {
+  path: (string | number)[];
+  message: string;
+}
 
 interface ErrorResponse {
   statusCode: number;
@@ -8,6 +14,9 @@ interface ErrorResponse {
 }
 
 const getStatusCode = (err: Error): number => {
+  if (err instanceof ZodError) {
+    return 400;
+  }
   if ('statusCode' in err && typeof err.statusCode === 'number') {
     return err.statusCode;
   }
@@ -18,6 +27,15 @@ const getStatusCode = (err: Error): number => {
 };
 
 const getErrorDetails = (err: Error): string | object => {
+  if (err instanceof ZodError) {
+    // In Zod v4, the error object has issues instead of errors
+    const issues = (err as any).issues as ZodIssue[] | undefined;
+    if (issues) {
+      return issues.map((issue) => `${issue.path.join('.') || '(root)'}: ${issue.message}`);
+    }
+    // Fallback to message for other ZodError instances
+    return err.message;
+  }
   if (err.name === 'PrismaClientValidationError') {
     return err.message;
   }
@@ -27,10 +45,17 @@ const getErrorDetails = (err: Error): string | object => {
       message: err.message,
     };
   }
-  if (err.name === 'ValidationError' || err.name === 'ZodError') {
+  if (err.name === 'ValidationError') {
     return err.message;
   }
   return err.message;
+};
+
+const getMessage = (err: Error): string => {
+  if (err instanceof ZodError) {
+    return 'Validation failed';
+  }
+  return err.message || 'Internal Server Error';
 };
 
 export function errorHandler(
@@ -45,7 +70,7 @@ export function errorHandler(
 
   const errorResponse: ErrorResponse = {
     statusCode,
-    message: err.message || 'Internal Server Error',
+    message: getMessage(err),
     error: errorDetails,
     timestamp,
   };

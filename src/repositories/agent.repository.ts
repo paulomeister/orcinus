@@ -18,3 +18,14 @@ export async function findAll(): Promise<Agent[]> {
 
   return agents;
 }
+
+export async function findById(id: string): Promise<Agent | null> {
+  return prisma.agent.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+  });
+}
