@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
 import { listAgents } from './agent.service';
 import { findAll } from '../repositories/agent.repository';
 import { PrismaClient } from '@prisma/client';
@@ -6,14 +6,20 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 describe('listAgents', () => {
+  let createdAgentIds: string[] = [];
+
   beforeAll(async () => {
     // Clean up any existing agents
     await prisma.agent.deleteMany({});
   });
 
   afterAll(async () => {
-    // Clean up
-    await prisma.agent.deleteMany({});
+    // Clean up only the agents we created
+    if (createdAgentIds.length > 0) {
+      await prisma.agent.deleteMany({
+        where: { id: { in: createdAgentIds } },
+      });
+    }
     await prisma.$disconnect();
   });
 
@@ -25,27 +31,32 @@ describe('listAgents', () => {
 
   it('returns agents ordered by name when they exist', async () => {
     // Create test agents in non-alphabetical order
-    await prisma.agent.create({
+    const agent1 = await prisma.agent.create({
       data: {
-        id: 'agent-3',
+        id: `agent-${Date.now()}-charlie`,
         name: 'Charlie',
-        email: 'charlie@example.com',
+        email: `charlie-${Date.now()}@example.com`,
       },
     });
-    await prisma.agent.create({
+    createdAgentIds.push(agent1.id);
+
+    const agent2 = await prisma.agent.create({
       data: {
-        id: 'agent-1',
+        id: `agent-${Date.now()}-alice`,
         name: 'Alice',
-        email: 'alice@example.com',
+        email: `alice-${Date.now()}@example.com`,
       },
     });
-    await prisma.agent.create({
+    createdAgentIds.push(agent2.id);
+
+    const agent3 = await prisma.agent.create({
       data: {
-        id: 'agent-2',
+        id: `agent-${Date.now()}-bob`,
         name: 'Bob',
-        email: 'bob@example.com',
+        email: `bob-${Date.now()}@example.com`,
       },
     });
+    createdAgentIds.push(agent3.id);
 
     const result = await listAgents();
 
@@ -58,13 +69,14 @@ describe('listAgents', () => {
 
   it('passthrough works: returns same result as repository.findAll()', async () => {
     // Create a test agent
-    await prisma.agent.create({
+    const agent = await prisma.agent.create({
       data: {
-        id: 'agent-test',
+        id: `agent-${Date.now()}-test`,
         name: 'Test Agent',
-        email: 'test@example.com',
+        email: `test-${Date.now()}@example.com`,
       },
     });
+    createdAgentIds.push(agent.id);
 
     const serviceResult = await listAgents();
     const repositoryResult = await findAll();
