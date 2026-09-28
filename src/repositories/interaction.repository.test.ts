@@ -9,35 +9,29 @@ describe('interaction.repository', () => {
   let testAgentId: string;
 
   beforeAll(async () => {
-    // Clean up first
-    await prisma.interaction.deleteMany({});
-    await prisma.agent.deleteMany({});
-
-    // Create a test agent
+    // Create a test agent scoped to this suite — do not touch other suites' data
     const agent = await prisma.agent.create({
       data: {
-        name: 'Test Agent',
-        email: `test-${Date.now()}@example.com`,
+        name: `Test Agent ${Date.now()}`,
+        email: `test-${Date.now()}-${Math.random()}@example.com`,
       },
     });
     testAgentId = agent.id;
   });
 
   afterAll(async () => {
-    // Clean up
-    await prisma.interaction.deleteMany({});
-    await prisma.agent.deleteMany({});
+    // Delete children before the parent to satisfy interactions_agent_id_fkey
+    await prisma.interaction.deleteMany({ where: { agentId: testAgentId } });
+    await prisma.agent.delete({ where: { id: testAgentId } });
     await prisma.$disconnect();
   });
 
   beforeEach(async () => {
-    // Clean up interactions before each test
-    await prisma.interaction.deleteMany({});
+  await prisma.interaction.deleteMany({ where: { agentId: testAgentId } });
   });
 
   afterEach(async () => {
-    // Clean up interactions after each test
-    await prisma.interaction.deleteMany({});
+    await prisma.interaction.deleteMany({ where: { agentId: testAgentId } });
   });
 
   describe('create', () => {
@@ -266,7 +260,7 @@ describe('interaction.repository', () => {
     });
 
     it('filters by type', async () => {
-      // Create 3 interactions with mixed types
+    // Create 3 interactions with mixed types: i=0 → LLAMADA, i=1,2 → TICKET
       for (let i = 0; i < 3; i++) {
         await prisma.interaction.create({
           data: {
@@ -279,7 +273,7 @@ describe('interaction.repository', () => {
       }
 
       const result = await count({ type: InteractionType.LLAMADA });
-      expect(result).toBe(2);
+      expect(result).toBe(1);
     });
 
     it('count matches findMany without pagination', async () => {

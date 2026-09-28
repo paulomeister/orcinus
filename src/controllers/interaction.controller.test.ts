@@ -16,7 +16,7 @@ describe('interaction.controller', () => {
 
   describe('create', () => {
     const validBody = {
-      agentId: 'agent-uuid',
+      agentId: '11111111-1111-4111-8111-111111111111',
       type: 'llamada',
       openedAt: '2026-01-15T10:30:00Z',
     };
@@ -41,7 +41,7 @@ describe('interaction.controller', () => {
       await create({ body: validBody } as unknown as Request, mockResponse as unknown as Response, mockNext);
 
       expect(interactionService.createInteraction).toHaveBeenCalledWith({
-        agentId: 'agent-uuid',
+        agentId: '11111111-1111-4111-8111-111111111111',
         type: InteractionType.LLAMADA,
         openedAt: expect.any(Date),
       });
@@ -80,7 +80,7 @@ describe('interaction.controller', () => {
   });
 
   describe('updateStatus', () => {
-    const validParams = { id: 'interaction-uuid' };
+    const validParams = { id: '22222222-2222-4222-8222-222222222222' };
     const validBody = { status: 'en_progreso' };
 
     it('calls service.updateInteractionStatus and returns 200', async () => {
@@ -104,7 +104,7 @@ describe('interaction.controller', () => {
       );
 
       expect(interactionService.updateInteractionStatus).toHaveBeenCalledWith(
-        'interaction-uuid',
+        '22222222-2222-4222-8222-222222222222',
         InteractionStatus.EN_PROGRESO
       );
       expect(mockResponse.status).toHaveBeenCalledWith(200);

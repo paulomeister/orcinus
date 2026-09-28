@@ -1,15 +1,11 @@
 import type { Request, Response, NextFunction } from 'express';
+import { STATUS_CODES } from 'http';
 import { ZodError } from 'zod';
-
-interface ZodIssue {
-  path: (string | number)[];
-  message: string;
-}
 
 interface ErrorResponse {
   statusCode: number;
-  message: string;
-  error: string | object;
+  message: string | string[];
+  error: string;
   timestamp: string;
 }
 
@@ -26,34 +22,14 @@ const getStatusCode = (err: Error): number => {
   return 500;
 };
 
-const getErrorDetails = (err: Error): string | object => {
-  if (err instanceof ZodError) {
-    // In Zod v4, the error object has issues instead of errors
-    const issues = (err as any).issues as ZodIssue[] | undefined;
-    if (issues) {
-      return issues.map((issue) => `${issue.path.join('.') || '(root)'}: ${issue.message}`);
-    }
-    // Fallback to message for other ZodError instances
-    return err.message;
-  }
-  if (err.name === 'PrismaClientValidationError') {
-    return err.message;
-  }
-  if (err.name === 'PrismaClientKnownRequestError') {
-    return {
-      code: err.message,
-      message: err.message,
-    };
-  }
-  if (err.name === 'ValidationError') {
-    return err.message;
-  }
-  return err.message;
+// error is always the pure HTTP reason phrase, matching design.md's example
+const getErrorLabel = (statusCode: number): string => {
+  return STATUS_CODES[statusCode] ?? 'Internal Server Error';
 };
 
-const getMessage = (err: Error): string => {
-  if (err instanceof ZodError) {
-    return 'Validation failed';
+const getMessage = (err: Error): string | string[] => {
+  if ('details' in err && Array.isArray((err as any).details)) {
+    return (err as any).details;
   }
   return err.message || 'Internal Server Error';
 };
@@ -65,13 +41,12 @@ export function errorHandler(
   _next: NextFunction
 ): void {
   const statusCode = getStatusCode(err);
-  const errorDetails = getErrorDetails(err);
   const timestamp = new Date().toISOString();
 
   const errorResponse: ErrorResponse = {
     statusCode,
     message: getMessage(err),
-    error: errorDetails,
+    error: getErrorLabel(statusCode),
     timestamp,
   };
 

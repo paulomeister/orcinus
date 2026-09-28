@@ -153,7 +153,9 @@ The upper bound is exclusive.
 
 ## Error Handling
 
-Controllers catch service/repository errors and map them to the standard error envelope:
+Controllers catch service/repository errors and map them to the standard error envelope. `error` is always the HTTP reason phrase for `statusCode`; `message` carries the specific detail and is an array only for Zod validation failures.
+
+Single-error case (e.g. invalid status transition, not found):
 
 ```json
 {
@@ -164,4 +166,18 @@ Controllers catch service/repository errors and map them to the standard error e
 }
 ```
 
-A global Express error-handling middleware provides the final safety net for unhandled errors, returning `500 Internal Server Error` with a generic message.
+Validation-failure case (Zod, one entry per invalid field):
+
+```json
+{
+  "statusCode": 400,
+  "message": [
+    "agentId: agentId must be a valid UUID",
+    "type: type must be one of: llamada, ticket"
+  ],
+  "error": "Bad Request",
+  "timestamp": "2026-09-01T10:00:00.000Z"
+}
+```
+
+A global Express error-handling middleware provides the final safety net for unhandled errors, returning `500 Internal Server Error` with a generic message and `"error": "Internal Server Error"`.

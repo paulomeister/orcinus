@@ -11,30 +11,24 @@ describe('interaction.routes', () => {
   let createdInteractionIds: string[] = [];
 
   beforeAll(async () => {
-    // Clean up first
-    await prisma.interaction.deleteMany({});
-    await prisma.agent.deleteMany({});
-
-    // Create a test agent directly in the database
+    // Create a test agent scoped to this suite — never wipe the shared table
     const agent = await prisma.agent.create({
       data: {
-        name: 'Test Agent',
-        email: `test-${Date.now()}@example.com`,
+        name: `Test Agent ${Date.now()}`,
+        email: `test-${Date.now()}-${Math.random()}@example.com`,
       },
     });
     testAgentId = agent.id;
   });
 
   afterAll(async () => {
-    // Clean up - delete interactions first, then agent
+    // Delete children before the parent to satisfy interactions_agent_id_fkey
     if (createdInteractionIds.length > 0) {
       await prisma.interaction.deleteMany({
         where: { id: { in: createdInteractionIds } },
       });
     }
-    await prisma.agent.deleteMany({
-      where: { id: testAgentId },
-    });
+    await prisma.agent.delete({ where: { id: testAgentId } });
     await prisma.$disconnect();
   });
 

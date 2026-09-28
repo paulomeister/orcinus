@@ -10,8 +10,11 @@ export class AppError extends Error {
 }
 
 export class BadRequestError extends AppError {
-  constructor(message: string) {
+  details?: string[];
+
+  constructor(message: string, details?: string[]) {
     super(message, 400);
+    this.details = details;
   }
 }
 

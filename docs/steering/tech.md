@@ -108,3 +108,5 @@ model Interaction {
 - **Date Range Normalization:** Exclusive upper bound. A range "Sept 1 to Sept 5" translates to `opened_at >= '2026-09-01T00:00:00-05' AND opened_at < '2026-09-06T00:00:00-05'`.
 - **Pagination:** Offset-based with `page` and `pageSize` parameters.
 - **Error Format:** Consistent envelope `{ statusCode, message, error, timestamp }`.
+  - `error` is always the HTTP reason phrase derived from `statusCode` (e.g. `400` → `"Bad Request"`, `404` → `"Not Found"`), never a duplicate of `message` or validation detail.
+  - `message` is `string | string[]`: a single string for most errors, or an array of per-field validation failures (e.g. `"agentId: agentId must be a valid UUID"`) when the error originates from Zod schema validation.
