@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, afterAll } from 'vitest';
 import { listAgents } from './agent.service';
 import { findAll } from '../repositories/agent.repository';
 import { PrismaClient } from '@prisma/client';

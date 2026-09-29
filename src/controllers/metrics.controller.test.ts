@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { Request, Response, NextFunction } from 'express';
+import type { Response, NextFunction } from 'express';
 import { getMetrics } from './metrics.controller';
 import * as metricsService from '../services/metrics.service';
 import { BadRequestError } from '../errors/AppError';
