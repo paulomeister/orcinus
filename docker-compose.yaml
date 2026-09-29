@@ -37,14 +37,17 @@ services:
     # migrate deploy applies committed migrations (idempotent); db seed runs prisma/seed.ts
     command: sh -c "npx prisma migrate deploy && npx prisma db seed && npx tsx watch src/index.ts"
 
-  # frontend:
-  #   Descomentar cuando exista la app Vite
-  #   build:
-  #     context: ./frontend
-  #   ports:
-  #     - "5173:5173"
-  #   depends_on:
-  #     - backend
+  frontend:
+    build:
+      context: ./frontend
+    container_name: orcinus-frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:3000/api
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:
