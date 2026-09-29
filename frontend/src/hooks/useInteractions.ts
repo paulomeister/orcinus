@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { apiFetch } from '../api/client';
 import type { InteractionFilters, PaginatedInteractions } from '../api/types';
 
@@ -11,6 +11,9 @@ export function useInteractions(filters: InteractionFilters, pagination: Paginat
   const [data, setData] = useState<PaginatedInteractions | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [reloadToken, setReloadToken] = useState(0);
+
+  const refetch = useCallback(() => setReloadToken((t) => t + 1), []);
 
   useEffect(() => {
     let cancelled = false;
@@ -47,7 +50,8 @@ export function useInteractions(filters: InteractionFilters, pagination: Paginat
     filters.endDate,
     pagination.page,
     pagination.pageSize,
+    reloadToken,
   ]);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch };
 }

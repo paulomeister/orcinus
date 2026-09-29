@@ -14,7 +14,8 @@
 #### Components
 
 - `InteractionFilters` — dropdowns for agent, status, and type; date inputs for start/end; apply button.
-- `InteractionTable` — renders paginated rows. Columns: Agent, Type, Status, Opened At, Closed At.
+- `CreateInteractionForm` — modal form for creating an interaction. Fields: agent, type (`llamada` or `ticket`), and optional opening timestamp.
+- `InteractionTable` — renders paginated rows. Columns: Agent, Type, Status, Opened At, Closed At, and a status action.
 - `Pagination` — previous/next buttons and current page / total pages display.
 
 #### Data Flow
@@ -22,6 +23,13 @@
 1. On mount and on filter change, fetch `GET /api/interactions?...params`.
 2. Store results in component state: `{ data, total, page, pageSize, totalPages }`.
 3. On page change, re-fetch with the updated `page` parameter.
+4. To create an interaction, open `CreateInteractionForm` and submit
+   `POST /api/interactions` with the selected agent, type, and optional
+   opening timestamp.
+5. After successful creation, re-fetch the interaction list.
+6. To advance an interaction status, send
+   `PATCH /api/interactions/:id/status` with the next allowed status.
+7. After a successful status change, re-fetch the interaction list.
 
 The agent dropdown is populated from `GET /api/agents` on mount.
 
@@ -56,7 +64,9 @@ Use local `useState` and `useEffect` per page.
 
 Extract shared fetch logic into custom hooks:
 
-- `useInteractions(filters)` — returns `{ data, loading, error }`.
+- `useInteractions(filters, pagination)` — returns `{ data, loading, error, refetch }`.
+  The `refetch` function explicitly reloads the current interaction list after
+  mutations such as creation or status changes.
 - `useMetrics(startDate, endDate)` — returns `{ data, loading, error }`.
 
 ## Loading & Error States

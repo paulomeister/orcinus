@@ -25,6 +25,17 @@ and daily volume in a chart so that I can assess operations at a glance.
   indicator.
 - **REQ-FE-005**: WHEN an API request fails, the frontend shall display an
   error message to the user, not a blank screen or unhandled exception.
+- **REQ-FE-006**: The frontend shall provide a form to create a new interaction
+  assigned to an agent, with type (`llamada` or `ticket`) and an optional opening
+  timestamp.
+- **REQ-FE-007**: WHEN an interaction is created, the frontend shall send the
+  interaction data to the backend and refresh the interaction list after
+  successful creation.
+- **REQ-FE-008**: The frontend shall provide an action to advance an interaction
+  from `abierta` to `en_progreso` and from `en_progreso` to `resuelta`.
+- **REQ-FE-009**: WHEN an interaction status is changed, the frontend shall send
+  the requested status transition to the backend and refresh the interaction
+  list after a successful change.
 
 ### Metrics View
 

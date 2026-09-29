@@ -18,6 +18,21 @@ function extractErrorMessage(body: unknown, status: number): string {
   return `Request failed with status ${status}`;
 }
 
+async function handleResponse<T>(res: Response): Promise<T> {
+  let body: unknown = null;
+  try {
+    body = await res.json();
+  } catch {
+    // No/invalid JSON body — fall through to status-based message below.
+  }
+
+  if (!res.ok) {
+    throw new Error(extractErrorMessage(body, res.status));
+  }
+
+  return body as T;
+}
+
 export async function apiFetch<T>(path: string, params?: Record<string, string | undefined>): Promise<T> {
   const url = new URL(`${BASE_URL}${path}`);
   if (params) {
@@ -37,16 +52,35 @@ export async function apiFetch<T>(path: string, params?: Record<string, string |
     throw new Error('Could not reach the server. Please check your connection.');
   }
 
-  let body: unknown = null;
+  return handleResponse<T>(res);
+}
+
+export async function apiPost<T>(path: string, payload: unknown): Promise<T> {
+  let res: Response;
   try {
-    body = await res.json();
+    res = await fetch(`${BASE_URL}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+    });
   } catch {
-    // No/invalid JSON body — fall through to status-based message below.
+    throw new Error('Could not reach the server. Please check your connection.');
   }
 
-  if (!res.ok) {
-    throw new Error(extractErrorMessage(body, res.status));
+  return handleResponse<T>(res);
+}
+
+export async function apiPatch<T>(path: string, payload: unknown): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error('Could not reach the server. Please check your connection.');
   }
 
-  return body as T;
+  return handleResponse<T>(res);
 }
