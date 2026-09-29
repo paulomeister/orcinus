@@ -1,8 +1,8 @@
 import express from 'express';
-import agentRoutes from './routes/agent.routes';
-import interactionRoutes from './routes/interaction.routes';
-import metricsRoutes from './routes/metrics.routes';
-import { errorHandler } from './middleware/errorHandler';
+import agentRoutes from './routes/agent.routes.js';
+import interactionRoutes from './routes/interaction.routes.js';
+import metricsRoutes from './routes/metrics.routes.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 const PORT = 3000;

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import * as metricsRepository from '../repositories/metrics.repository';
-import { getMetrics, fillDailyGaps } from './metrics.service';
-import { BadRequestError } from '../errors/AppError';
+import * as metricsRepository from '../repositories/metrics.repository.js';
+import { getMetrics, fillDailyGaps } from './metrics.service.js';
+import { BadRequestError } from '../errors/AppError.js';
 
 vi.mock('../repositories/metrics.repository');
 

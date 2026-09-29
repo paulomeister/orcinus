@@ -8,8 +8,8 @@ vi.mock('../controllers/metrics.controller', () => ({
   getMetrics: vi.fn(),
 }));
 
-import metricsRoutes from './metrics.routes';
-import { getMetrics } from '../controllers/metrics.controller';
+import metricsRoutes from './metrics.routes.js';
+import { getMetrics } from '../controllers/metrics.controller.js';
 
 describe('metrics.routes', () => {
   let app: express.Application;

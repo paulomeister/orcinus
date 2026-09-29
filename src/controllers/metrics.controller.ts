@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
-import * as metricsService from '../services/metrics.service';
-import { metricsQuerySchema } from '../schemas/metrics.schema';
-import { BadRequestError } from '../errors/AppError';
+import * as metricsService from '../services/metrics.service.js';
+import { metricsQuerySchema } from '../schemas/metrics.schema.js';
+import { BadRequestError } from '../errors/AppError.js';
 
 function toValidationError(err: unknown): unknown {
   if (err instanceof ZodError) {

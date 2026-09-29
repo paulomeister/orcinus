@@ -1,5 +1,5 @@
-import { BadRequestError } from '../errors/AppError';
-import { getAgentMetrics, getDailyVolume } from '../repositories/metrics.repository';
+import { BadRequestError } from '../errors/AppError.js';
+import { getAgentMetrics, getDailyVolume } from '../repositories/metrics.repository.js';
 
 export interface AgentMetrics {
   agentId: string;

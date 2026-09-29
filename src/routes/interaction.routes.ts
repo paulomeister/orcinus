@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { create, updateStatus, list } from '../controllers/interaction.controller';
+import { create, updateStatus, list } from '../controllers/interaction.controller.js';
 
 const router = Router();
 

@@ -7,8 +7,8 @@ vi.mock('../controllers/agent.controller', () => ({
   list: vi.fn(),
 }));
 
-import agentRoutes from './agent.routes';
-import { list } from '../controllers/agent.controller';
+import agentRoutes from './agent.routes.js';
+import { list } from '../controllers/agent.controller.js';
 
 describe('agent.routes', () => {
   let app: express.Application;

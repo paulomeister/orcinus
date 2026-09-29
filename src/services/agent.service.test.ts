@@ -1,6 +1,6 @@
 import { describe, it, expect, afterAll } from 'vitest';
-import { listAgents } from './agent.service';
-import { findAll } from '../repositories/agent.repository';
+import { listAgents } from './agent.service.js';
+import { findAll } from '../repositories/agent.repository.js';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();

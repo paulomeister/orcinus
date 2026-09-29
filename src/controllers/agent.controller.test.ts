@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import type { Request, Response } from 'express';
-import { list } from './agent.controller';
-import { listAgents } from '../services/agent.service';
+import { list } from './agent.controller.js';
+import { listAgents } from '../services/agent.service.js';
 
 vi.mock('../services/agent.service');
 

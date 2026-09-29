@@ -1,7 +1,7 @@
 import { InteractionStatus, InteractionType } from '@prisma/client';
-import * as interactionRepository from '../repositories/interaction.repository';
-import * as agentRepository from '../repositories/agent.repository';
-import { BadRequestError, NotFoundError } from '../errors/AppError';
+import * as interactionRepository from '../repositories/interaction.repository.js';
+import * as agentRepository from '../repositories/agent.repository.js';
+import { BadRequestError, NotFoundError } from '../errors/AppError.js';
 
 const ALLOWED_TRANSITIONS: Record<InteractionStatus, InteractionStatus | null> = {
   [InteractionStatus.ABIERTA]: InteractionStatus.EN_PROGRESO,

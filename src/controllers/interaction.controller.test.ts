@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
-import { create, updateStatus, list } from './interaction.controller';
-import * as interactionService from '../services/interaction.service';
-import { serializeInteraction } from '../utils/enumMappers';
+import { create, updateStatus, list } from './interaction.controller.js';
+import * as interactionService from '../services/interaction.service.js';
+import { serializeInteraction } from '../utils/enumMappers.js';
 import { InteractionStatus, InteractionType } from '@prisma/client';
 
 vi.mock('../services/interaction.service');

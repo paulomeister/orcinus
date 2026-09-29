@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { listAgents } from '../services/agent.service';
+import { listAgents } from '../services/agent.service.js';
 
 export async function list(_req: Request, res: Response) {
   const agents = await listAgents();

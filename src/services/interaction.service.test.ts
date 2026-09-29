@@ -1,13 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import * as interactionRepository from '../repositories/interaction.repository';
-import * as agentRepository from '../repositories/agent.repository';
+import * as interactionRepository from '../repositories/interaction.repository.js';
+import * as agentRepository from '../repositories/agent.repository.js';
 import {
   createInteraction,
   updateInteractionStatus,
   listInteractions,
-} from './interaction.service';
+} from './interaction.service.js';
 import { InteractionStatus, InteractionType } from '@prisma/client';
-import { BadRequestError, NotFoundError } from '../errors/AppError';
+import { BadRequestError, NotFoundError } from '../errors/AppError.js';
 
 vi.mock('../repositories/interaction.repository');
 vi.mock('../repositories/agent.repository');

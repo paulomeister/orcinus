@@ -1,14 +1,14 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
-import * as interactionService from '../services/interaction.service';
+import * as interactionService from '../services/interaction.service.js';
 import {
   createInteractionSchema,
   updateStatusParamsSchema,
   updateStatusSchema,
   listInteractionsSchema,
-} from '../schemas/interaction.schema';
-import { serializeInteraction } from '../utils/enumMappers';
-import { BadRequestError } from '../errors/AppError';
+} from '../schemas/interaction.schema.js';
+import { serializeInteraction } from '../utils/enumMappers.js';
+import { BadRequestError } from '../errors/AppError.js';
 
 // NEW: shared helper
 function toValidationError(err: unknown): unknown {

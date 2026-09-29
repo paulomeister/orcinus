@@ -1,5 +1,5 @@
 import { describe, it, expect, afterAll } from 'vitest';
-import { findAll } from './agent.repository';
+import { findAll } from './agent.repository.js';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();

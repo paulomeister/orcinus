@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
-import { app } from '../index';
+import { app } from '../index.js';
 import { PrismaClient } from '@prisma/client';
 import { InteractionStatus, InteractionType } from '@prisma/client';
 

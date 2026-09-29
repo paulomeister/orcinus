@@ -7,12 +7,11 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "esnext",
-    "target": "esnext",
-    "types": [],
+    "module": "NodeNext",
+    "target": "ES2022",
+    "types": ["node"],
     // For nodejs:
     // "lib": ["esnext"],
-    // "types": ["node"],
     // and npm install -D @types/node
 
     // Other Outputs
@@ -34,15 +33,15 @@
 
     // Recommended Options
     "strict": true,
-    "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
 
-    "moduleResolution": "bundler",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
   },
-  "exclude": ["scripts/", "node_modules/"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["prisma/", "node_modules/"]
 }

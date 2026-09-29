@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { API_STATUS_TO_PRISMA, API_TYPE_TO_PRISMA } from '../utils/enumMappers';
+import { API_STATUS_TO_PRISMA, API_TYPE_TO_PRISMA } from '../utils/enumMappers.js';
 
 export const createInteractionSchema = z.object({
   agentId: z.string().uuid({ message: 'agentId must be a valid UUID' }),

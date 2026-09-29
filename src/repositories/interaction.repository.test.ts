@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { create, findById, findMany, count, updateStatus } from './interaction.repository';
+import { create, findById, findMany, count, updateStatus } from './interaction.repository.js';
 import { InteractionStatus, InteractionType } from '@prisma/client';
 
 const prisma = new PrismaClient();

@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Response, NextFunction } from 'express';
-import { getMetrics } from './metrics.controller';
-import * as metricsService from '../services/metrics.service';
-import { BadRequestError } from '../errors/AppError';
+import { getMetrics } from './metrics.controller.js';
+import * as metricsService from '../services/metrics.service.js';
+import { BadRequestError } from '../errors/AppError.js';
 
 vi.mock('../services/metrics.service');
 
