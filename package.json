@@ -15,6 +15,7 @@
     "@types/express": "^5.0.6",
     "@types/node": "^20.10.0",
     "@types/supertest": "^7.2.1",
+    "@types/cors": "^2.8.17",
     "express": "^5.2.1",
     "prisma": "^5.10.0",
     "supertest": "^7.3.0",
@@ -24,6 +25,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.10.0",
+    "cors": "^2.8.5",
     "zod": "^4.6.5"
   }
 }

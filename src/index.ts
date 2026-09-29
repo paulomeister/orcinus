@@ -3,11 +3,13 @@ import agentRoutes from './routes/agent.routes.js';
 import interactionRoutes from './routes/interaction.routes.js';
 import metricsRoutes from './routes/metrics.routes.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import cors from 'cors';
 
 const app = express();
 const PORT = 3000;
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 
 // Routes
